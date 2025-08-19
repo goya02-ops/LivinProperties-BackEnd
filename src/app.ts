@@ -1,0 +1,26 @@
+import 'reflect-metadata'
+import express from "express";
+import { orm, syncSchema } from './shared/orm.js';
+import { RequestContext } from '@mikro-orm/mysql';
+
+
+const app = express();
+app.use(express.json());
+
+//luego de los middleware bases
+app.use((req, res, next) => {
+  RequestContext.create(orm.em, next);
+});
+
+//antes de las rutas y de los middleware de negocio
+
+app.use((_, res) => {
+  res.status(404).json({ message: "Not Found" });
+  return;
+})
+
+await syncSchema(); //never in production
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
