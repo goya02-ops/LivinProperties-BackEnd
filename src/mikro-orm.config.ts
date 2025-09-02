@@ -1,5 +1,5 @@
 import { defineConfig } from '@mikro-orm/mysql';
-import { City } from './city/city';
+import { City } from './city/city.entity';
 
 export default defineConfig({
   entities: [City],

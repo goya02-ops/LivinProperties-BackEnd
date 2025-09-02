@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { City } from "./city";
+import { City } from "./city.entity.js";
 import { orm } from "../shared/orm.js";
 
 // Middleware para sanitizar la entrada.

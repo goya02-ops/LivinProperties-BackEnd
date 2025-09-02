@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { CityController } from "./city.controller.js";
+import { CityController as controller } from "./city.controller.js";
 
 export const router = Router();
 
-router.get("/", CityController.findAll);
-router.get("/:id", CityController.findOne);
-router.post("/", CityController.sanitizeCityInput, CityController.add);
-router.put("/:id", CityController.sanitizeCityInput, CityController.update);
-router.delete("/:id", CityController.remove);
+router.get("/", controller.findAll);
+router.get("/:id", controller.findOne);
+router.post("/", controller.sanitizeCityInput, controller.add);
+router.put("/:id", controller.sanitizeCityInput, controller.update);
+router.delete("/:id", controller.remove);
