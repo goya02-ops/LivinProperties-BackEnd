@@ -3,6 +3,7 @@ import express from "express";
 import { orm, syncSchema } from './shared/orm.js';
 import { RequestContext } from '@mikro-orm/mysql';
 
+import { stateRouter } from './state/state.routes.js';
 
 const app = express();
 app.use(express.json());
@@ -13,6 +14,8 @@ app.use((req, res, next) => {
 });
 
 //antes de las rutas y de los middleware de negocio
+
+app.use('/states', stateRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Not Found" });
