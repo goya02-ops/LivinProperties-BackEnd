@@ -1,27 +1,26 @@
 import { MikroORM } from "@mikro-orm/mysql";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
+import { City } from '../city/city.js'; 
 
 export const orm = await MikroORM.init({
-  entities: ["./dist/**/*.entity.js"],
-  entitiesTs: ["./src/**/*.entity.ts"],
-  dbName: "inmobiliarialvp",
-  clientUrl: "mysql://lvp:AgusLuchoRamaSantiTomi12345@localhost:3306/inmobiliarialvp", //Contrasena cambiada
-  highlighter: new SqlHighlighter(),
-  debug: true,
-  schemaGenerator: { // never in production
-    disableForeignKeys: true,
-    createForeignKeyConstraints: true,
-    ignoreSchema:[],
-  },
-})
+  entities: [City], // ⬅️  ¡Aquí es donde pasas la entidad!
+  entitiesTs: [City], // ⬅️  Repite para el entorno de desarrollo con TypeScript
+  dbName: "inmobiliarialvp",
+  clientUrl: "mysql://lvp:AgusLuchoRamaSantiTomi12345@localhost:3306/inmobiliarialvp",
+  highlighter: new SqlHighlighter(),
+  debug: true,
+  schemaGenerator: {
+    disableForeignKeys: true,
+    createForeignKeyConstraints: true,
+    ignoreSchema: [],
+  },
+});
 
 export const syncSchema = async () => {
-  const generator = orm.getSchemaGenerator()
-
+  const generator = orm.getSchemaGenerator();
   /*
-  await generator.dropSchema();
-  await generator.createSchema();
-  */
-
+  await generator.dropSchema();
+  await generator.createSchema();
+  */ 
   await generator.updateSchema();
-}
+};

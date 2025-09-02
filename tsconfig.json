@@ -2,10 +2,11 @@
   "compilerOptions": {
     "incremental": true,
     "target": "es2020",
-    "module": "ES2022",
-    "moduleResolution": "bundler",
+    "module": "esnext",
+    "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "./dist",
+    "rootDir": "./src",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
