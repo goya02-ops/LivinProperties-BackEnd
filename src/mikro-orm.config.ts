@@ -1,8 +1,9 @@
 import { defineConfig } from '@mikro-orm/mysql';
 import { City } from './city/city.entity';
+import { Neighborhood } from './neighborhood/neighborhood.entity';
 
 export default defineConfig({
-  entities: [City],
+  entities: [City, Neighborhood],
   dbName: 'inmobiliarialvp',
   user: 'lvp',
   password: 'AgusLuchoRamaSantiTomi12345',

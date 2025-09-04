@@ -1,0 +1,15 @@
+### Crear un barrio
+POST http://localhost:3000/neighborhoods
+Content-Type: application/json
+
+{
+    "name": "Centro",
+    "postalCode": 2000
+}
+
+###
+
+### Obtener un barrio por nombre
+GET http://localhost:3000/neighborhoods
+
+###
