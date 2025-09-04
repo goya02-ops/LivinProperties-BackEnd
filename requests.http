@@ -3,8 +3,8 @@ POST http://localhost:3000/cities
 Content-Type: application/json
 
 {
-  "name": "Rosario",
-  "postalCode": 2000
+  "postalCode": 2000,
+  "name": "Rosario"
 }
 
 ###
@@ -15,12 +15,12 @@ GET http://localhost:3000/cities
 ###
 
 ### Obtener una ciudad por ID
-GET http://localhost:3000/cities/1
+GET http://localhost:3000/cities/2000
 
 ###
 
 ### Actualizar ciudad por ID
-PUT http://localhost:3000/cities/1
+PUT http://localhost:3000/cities/2000
 Content-Type: application/json
 
 {
@@ -31,4 +31,4 @@ Content-Type: application/json
 ###
 
 ### Eliminar ciudad por ID
-DELETE http://localhost:3000/cities/1
+DELETE http://localhost:3000/cities/3000

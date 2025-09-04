@@ -3,9 +3,9 @@ import { City } from './city/city.entity';
 
 export default defineConfig({
   entities: [City],
-  dbName: 'tu_base_de_datos',
-  user: 'tu_usuario',
-  password: 'tu_contraseña',
+  dbName: 'inmobiliarialvp',
+  user: 'lvp',
+  password: 'AgusLuchoRamaSantiTomi12345',
   host: 'localhost',
   port: 3306,
   debug: true,
