@@ -1,0 +1,32 @@
+###get states
+GET http://localhost:3000/api/states
+
+###add state
+POST http://localhost:3000/api/states
+Content-Type: application/json
+
+{
+    "description": "Apartment State",
+    "denomination": "apartment",
+    "status": "active",
+    "address": "123 Main St, Cityville",
+    "aptNumber": "A1"
+}
+
+###get state by id
+GET http://localhost:3000/api/states/1
+
+###update state by id
+PUT http://localhost:3000/api/states/1
+Content-Type: application/json
+
+{
+    "description": "Updated Apartment State",
+    "denomination": "apartment",
+    "status": "inactive",
+    "address": "123 Main St, Cityville",
+    "aptNumber": "A1"
+}
+
+###delete state by id
+DELETE http://localhost:3000/api/states/1
