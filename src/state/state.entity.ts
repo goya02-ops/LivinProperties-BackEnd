@@ -1,5 +1,6 @@
 import { Entity, Property, Cascade, Collection, OneToMany, ManyToOne } from '@mikro-orm/mysql';
 import { BaseEntity } from '../shared/baseEntity.js';
+import { Price } from '../price/price.entity.js';
 
 @Entity()
 export class State extends BaseEntity {
@@ -18,12 +19,13 @@ export class State extends BaseEntity {
 
   @Property()
   aptNumber!: string;
+
+  @OneToMany(() => Price, (price) => price.state, { cascade: [Cascade.ALL] })
+  prices = new Collection<Price>(this);
 /*
 
   @OneToMany(() => Designation, (designation) => designation.state, { cascade: [Cascade.ALL] })
 
-  @OneToMany(() => Price, (price) => price.state, { cascade: [Cascade.ALL] })
-  prices = new Collection<Price>(this);
 
   @OneToMany(() => Documentation, (documentation) => documentation.state, { cascade: [Cascade.ALL] })
   documentations = new Collection<Documentation>(this);

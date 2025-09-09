@@ -4,6 +4,7 @@ import { orm, syncSchema } from './shared/orm.js';
 import { RequestContext } from '@mikro-orm/mysql';
 
 import { stateRouter } from './state/state.routes.js';
+import { priceRouter } from './price/price.routes.js';
 
 const app = express();
 app.use(express.json());
@@ -15,7 +16,8 @@ app.use((req, res, next) => {
 
 //antes de las rutas y de los middleware de negocio
 
-app.use('/states', stateRouter);
+app.use('/api/states', stateRouter);
+app.use('/api/prices', priceRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Not Found" });
