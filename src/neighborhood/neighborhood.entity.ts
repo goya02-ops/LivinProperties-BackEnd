@@ -1,13 +1,13 @@
-import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property, ManyToOne, Rel } from '@mikro-orm/core';
 import { City } from '../city/city.entity.js';
+import { BaseEntity } from '../shared/baseEntity.js';
 
 @Entity()
-export class Neighborhood {
+export class Neighborhood extends BaseEntity {
 
-  @PrimaryKey()
-  name!: string;   // PK parte 1
+  @Property()
+  name!: string;  
 
-  @ManyToOne(() => City, { primary: true }) 
-  city!: City;     // PK parte 2 y además FK a City
-
+  @ManyToOne(() => City, { nullable: false }) 
+  city!: Rel<City>;    
 }

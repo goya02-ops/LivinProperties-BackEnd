@@ -1,10 +1,9 @@
 import { MikroORM } from "@mikro-orm/mysql";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
-import { City } from '../city/city.entity.js'; 
 
 export const orm = await MikroORM.init({
-  entities: [City], // ⬅️  ¡Aquí es donde pasas la entidad!
-  entitiesTs: [City], // ⬅️  Repite para el entorno de desarrollo con TypeScript
+  entities: ["./dist/**/*.entity.js"], 
+  entitiesTs: ["./src/**/*.entity.ts"], 
   dbName: "inmobiliarialvp",
   clientUrl: "mysql://lvp:AgusLuchoRamaSantiTomi12345@localhost:3306/inmobiliarialvp",
   highlighter: new SqlHighlighter(),

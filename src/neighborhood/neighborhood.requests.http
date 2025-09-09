@@ -3,13 +3,32 @@ POST http://localhost:3000/neighborhoods
 Content-Type: application/json
 
 {
-    "name": "Centro",
-    "postalCode": 2000
+  "name": "Centro",
+  "city": "1"
 }
 
 ###
 
-### Obtener un barrio por nombre
+### Listar todos los barrios
 GET http://localhost:3000/neighborhoods
 
 ###
+
+### Obtener un barrio por nombre y código postal de la ciudad
+GET http://localhost:3000/neighborhoods/Centro/1
+
+###
+
+### Actualizar un barrio
+PUT http://localhost:3000/neighborhoods/Centro/2000
+Content-Type: application/json
+
+{
+  "name": "Centro Histórico",
+  "city": "1"
+}
+
+###
+
+### Eliminar un barrio
+DELETE http://localhost:3000/neighborhoods/Centro Histórico/2000

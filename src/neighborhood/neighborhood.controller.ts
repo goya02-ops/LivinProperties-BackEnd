@@ -1,125 +1,130 @@
-// src/neighborhood/neighborhood.controller.ts
-import { Request, Response, NextFunction } from 'express';
-import { orm } from '../shared/orm.js';
-import { Neighborhood } from './neighborhood.entity.js';
-import { City } from '../city/city.entity.js';
+import { Request, Response, NextFunction } from "express";
+import { Neighborhood } from "./neighborhood.entity.js";
+import { City } from "../city/city.entity.js";
+import { orm } from "../shared/orm.js";
 
-const em = orm.em;
+// Middleware para sanitizar la entrada.
+function sanitizeNeighborhoodInput(req: Request, res: Response, next: NextFunction) {
+    req.body.sanitizeInput = {
+        name: req.body.name,
+        city: req.body.city, // acá esperamos que venga el postalCode de la ciudad
+    };
 
-// READ: Obtener un barrio por su clave primaria compuesta
-async function findOne(req: Request, res: Response, next: NextFunction) {
+    Object.keys(req.body.sanitizeInput).forEach(key => {
+        if (req.body.sanitizeInput[key] === undefined) delete req.body.sanitizeInput[key];
+    });
+
+    next();
+}
+
+// Obtener todos los barrios.
+async function findAll(req: Request, res: Response) {
     try {
-        // Convertir el string a number
-        const cityId = Number(req.params.postalCode);
+        const em = orm.em;
+        const neighborhoods = await em.find(Neighborhood, {}, { populate: ["city"] });
+        res.status(200).json({ message: "Neighborhoods retrieved successfully", data: neighborhoods });
+    } catch (error: any) {
+        res.status(500).json({ data: error.message });
+    }
+}
 
-        // Buscar la instancia de la ciudad usando su clave primaria
-        const city = await em.findOne(City, { postalCode: cityId });
+// Obtener un barrio por su nombre y código postal de la ciudad.
+async function findOne(req: Request, res: Response) {
+    try {
+        const em = orm.em;
+        const { name, postalCode } = req.params;
 
-        if (!city) {
-            return res.status(404).json({ message: 'Ciudad no encontrada' });
-        }
-        
-        // Buscar el barrio usando la instancia de la ciudad
         const neighborhood = await em.findOne(Neighborhood, {
-            name: req.params.name,
-            city: city
-        }, {
-            populate: ['city']
-        });
-
-        if (neighborhood) {
-            res.status(200).json(neighborhood);
-        } else {
-            res.status(404).json({ message: 'Barrio no encontrado' });
-        }
-    } catch (error) {
-        next(error);
-    }
-}
-
-// CREATE: Agregar un nuevo barrio
-// src/neighborhood/neighborhood.controller.ts
-// ... (resto del código y imports) ...
-
-// CREATE: Agregar un nuevo barrio
-async function add(req: Request, res: Response, next: NextFunction) {
-    try {
-        const cityPostalCode = Number(req.body.postalCode);
-
-        // Validar si el código postal es un número válido
-        if (isNaN(cityPostalCode)) {
-            return res.status(400).json({ message: 'El código postal no es un número válido.' });
-        }
-        
-        const city = await em.findOne(City, { postalCode: cityPostalCode });
-        
-        if (!city) {
-            return res.status(404).json({ message: 'Ciudad no encontrada' });
-        }
-
-        const newNeighborhood = em.create(Neighborhood, {
-            name: req.body.name,
-            city: city
-        });
-
-        await em.flush();
-
-        res.status(201).json(newNeighborhood);
-    } catch (error) {
-        next(error);
-    }
-}
-
-// UPDATE: Actualizar un barrio existente
-async function update(req: Request, res: Response, next: NextFunction) {
-    try {
-        // Convertir el string a number
-        const cityId = Number(req.params.postalCode);
-
-        const neighborhoodToUpdate = await em.findOne(Neighborhood, {
-            name: req.params.name,
-            city: { postalCode: cityId }
-        });
-
-        if (!neighborhoodToUpdate) {
-            return res.status(404).json({ message: 'Barrio no encontrado' });
-        }
-        
-        neighborhoodToUpdate.name = req.body.name;
-        await em.flush();
-
-        res.status(200).json(neighborhoodToUpdate);
-    } catch (error) {
-        next(error);
-    }
-}
-
-// DELETE: Eliminar un barrio por su clave compuesta
-async function remove(req: Request, res: Response, next: NextFunction) {
-    try {
-        // Convertir el string a number
-        const cityId = Number(req.params.postalCode);
-        
-        const neighborhood = await em.findOne(Neighborhood, {
-            name: req.params.name,
-            city: { postalCode: cityId }
-        });
+            name,
+            city: {postalCode: Number(postalCode)}
+        }, { populate: ["city"] });
 
         if (!neighborhood) {
-            return res.status(404).json({ message: 'Barrio no encontrado' });
+            return res.status(404).json({ message: "Neighborhood not found" });
         }
-
-        await em.removeAndFlush(neighborhood);
-
-        res.status(200).json({ message: 'Barrio eliminado correctamente' });
-    } catch (error) {
-        next(error);
+        res.status(200).json({ message: "Neighborhood retrieved successfully", data: neighborhood });
+    } catch (error: any) {
+        res.status(500).json({ data: error.message });
     }
 }
 
+// Crear un nuevo barrio.
+async function add(req: Request, res: Response) {
+    const em = orm.em;
+    try {
+    // Crear el barrio usando BaseEntity
+    const neighborhood = em.create(Neighborhood, 
+      req.body.sanitizeInput
+    );
+
+    await em.persistAndFlush(neighborhood);
+
+    res.status(201).json({ message: "Neighborhood created successfully", data: neighborhood });
+  } catch (error: any) {
+    console.error("Error creating neighborhood:", error);
+    res.status(500).json({ message: "Internal server error", data: error.message });
+  }
+}
+
+
+
+// Actualizar un barrio.
+async function update(req: Request, res: Response) {
+    try {
+        const em = orm.em.fork();
+        const { name, postalCode } = req.params;
+
+        const neighborhood = await em.findOneOrFail(Neighborhood, {
+            name,
+            city: {postalCode: Number(postalCode)}
+        }, { populate: ["city"] });
+
+        // Si se quiere actualizar el nombre o cambiar la ciudad, se reasigna
+        if (req.body.sanitizeInput.name) neighborhood.name = req.body.sanitizeInput.name;
+        if (req.body.sanitizeInput.city) {
+            const city = await em.findOneOrFail(City, { postalCode: req.body.sanitizeInput.city });
+            neighborhood.city = city;
+        }
+
+        await em.flush();
+        res.status(200).json({ message: "Neighborhood updated successfully", data: neighborhood });
+    } catch (error: any) {
+        if (error.name === 'EntityNotFoundError') {
+            return res.status(404).json({ message: "Neighborhood not found" });
+        }
+        res.status(500).json({ data: error.message });
+    }
+}
+
+// Eliminar un barrio.
+async function remove(req: Request, res: Response) {
+  try {
+    const em = orm.em.fork();
+    const { name, postalCode } = req.params;
+
+    const neighborhood = await em.findOne(Neighborhood, {
+      name,
+      city: { postalCode: Number(postalCode) },
+    }, { populate: ["city"] });
+
+    if (!neighborhood) {
+      return res.status(404).json({ message: "Neighborhood not found" });
+    }
+
+    await em.removeAndFlush(neighborhood);
+
+    res.status(200).json({ message: "Neighborhood deleted successfully" });
+  } catch (error: any) {
+    res.status(500).json({ data: error.message });
+  }
+}
+
+
 export const NeighborhoodController = {
+    sanitizeNeighborhoodInput,
+    findAll,
     findOne,
     add,
     update,
-    remove
-}
+    remove,
+};

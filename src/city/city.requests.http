@@ -3,6 +3,7 @@ POST http://localhost:3000/cities
 Content-Type: application/json
 
 {
+  "id": "autoincrement",
   "postalCode": 2000,
   "name": "Rosario"
 }
@@ -31,4 +32,4 @@ Content-Type: application/json
 ###
 
 ### Eliminar ciudad por ID
-DELETE http://localhost:3000/cities/3000
+DELETE http://localhost:3000/cities/2000
