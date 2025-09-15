@@ -1,0 +1,35 @@
+### Crear ciudad
+POST http://localhost:3000/cities
+Content-Type: application/json
+
+{
+  "id": "autoincrement",
+  "postalCode": 2000,
+  "name": "Rosario"
+}
+
+###
+
+### Listar todas las ciudades
+GET http://localhost:3000/cities
+
+###
+
+### Obtener una ciudad por ID
+GET http://localhost:3000/cities/2000
+
+###
+
+### Actualizar ciudad por ID
+PUT http://localhost:3000/cities/2000
+Content-Type: application/json
+
+{
+  "name": "Santa Fe",
+  "postalCode": 3000
+}
+
+###
+
+### Eliminar ciudad por ID
+DELETE http://localhost:3000/cities/2000

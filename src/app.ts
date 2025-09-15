@@ -3,6 +3,8 @@ import express from "express";
 import { orm, syncSchema } from './shared/orm.js';
 import { RequestContext } from '@mikro-orm/mysql';
 
+import { router as cityRouter } from './city/city.routes.js';
+import { router as neighborhoodRouter } from './neighborhood/neighborhood.routes.js';
 import { stateRouter } from './state/state.routes.js';
 import { priceRouter } from './price/price.routes.js';
 import { documentationRouter } from './documentation/documentation.routes.js';
@@ -17,6 +19,8 @@ app.use((req, res, next) => {
 
 //antes de las rutas y de los middleware de negocio
 
+app.use('/cities', cityRouter);
+app.use('/neighborhoods', neighborhoodRouter);
 app.use('/api/states', stateRouter);
 app.use('/api/prices', priceRouter);
 app.use('/api/documents', documentationRouter);
