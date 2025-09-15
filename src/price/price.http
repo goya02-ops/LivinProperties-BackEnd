@@ -1,0 +1,26 @@
+###get states
+GET http://localhost:3000/api/prices
+
+###add state
+POST http://localhost:3000/api/prices
+Content-Type: application/json
+
+{
+    "state": "1",
+    "fromDate": "2023-01-01",
+    "value": "100"
+}
+
+###get state by id
+GET http://localhost:3000/api/prices/1
+
+###update state by id
+PATCH http://localhost:3000/api/prices/1
+Content-Type: application/json
+
+{
+    "value": "150"
+}
+
+###delete state by id
+DELETE http://localhost:3000/api/prices/1

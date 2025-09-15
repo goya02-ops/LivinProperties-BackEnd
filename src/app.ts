@@ -5,6 +5,9 @@ import { RequestContext } from '@mikro-orm/mysql';
 
 import { router as cityRouter } from './city/city.routes.js';
 import { router as neighborhoodRouter } from './neighborhood/neighborhood.routes.js';
+import { stateRouter } from './state/state.routes.js';
+import { priceRouter } from './price/price.routes.js';
+import { documentationRouter } from './documentation/documentation.routes.js';
 
 const app = express();
 app.use(express.json());
@@ -18,6 +21,9 @@ app.use((req, res, next) => {
 
 app.use('/cities', cityRouter);
 app.use('/neighborhoods', neighborhoodRouter);
+app.use('/api/states', stateRouter);
+app.use('/api/prices', priceRouter);
+app.use('/api/documents', documentationRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Not Found" });
