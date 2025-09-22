@@ -2,7 +2,7 @@ import { Property, ManyToOne, Rel, Entity, OneToMany, Cascade, Collection } from
 import { BaseEntity } from '../shared/baseEntity.js';
 import { State } from '../state/state.entity.js';
 import { User } from '../user/user.entity.js';
-//import { Payment } from '../payment/payment.entity.js';
+import { Payment } from '../payment/payment.entity.js';
 //import { Chat } from '../chat/chat.entity.js';
 import { Visit } from '../visit/visit.entity.js';
 
@@ -23,10 +23,10 @@ export class Designation extends BaseEntity {
 
   @OneToMany(() => Visit, (visit) => visit.designation, {cascade: [Cascade.ALL]})
   visits = new Collection<Visit>(this);
-  /*
   
   @OneToMany(() => Payment, (payment) => payment.designation, {cascade: [Cascade.ALL]})
   payments = new Collection<Payment>(this);
+  /*
 
   @OneToMany(() => Chat, (chat) => chat.designation, {cascade: [Cascade.ALL]})
   chats = new Collection<Chat>(this);
