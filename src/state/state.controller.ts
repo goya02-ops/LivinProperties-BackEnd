@@ -10,6 +10,7 @@ function sanitizeStateInput(req: Request, res: Response, next: NextFunction) {
     status: req.body.status,
     address: req.body.address,
     aptNumber: req.body.aptNumber,
+    neighborhood: req.body.Neighborhood,
   };
 
   Object.keys(req.body.sanitizeInput).forEach(key => {
