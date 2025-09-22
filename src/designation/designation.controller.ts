@@ -8,7 +8,7 @@ function sanitizeDesignationInput(req: Request, res: Response, next: NextFunctio
     fromDate: req.body.fromDate,
     toDate: req.body.toDate,
     state: req.body.state,
-    //agent: req.body.user,
+    agent: req.body.user,
   };
 
   Object.keys(req.body.sanitizeDesignationInput).forEach((key) => {
@@ -51,7 +51,7 @@ async function add(req: Request, res: Response) {
     const em = orm.em;
     const designation = em.create(Designation, req.body);
     await em.flush();
-    res.status(201).json({ message: "Designation created", data: Designation});
+    res.status(201).json({ message: "Designation created", data: designation});
   } catch (error: any) {
     res.status(500).json({ data: error.message });
   }

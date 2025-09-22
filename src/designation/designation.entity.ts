@@ -1,7 +1,7 @@
 import { Property, ManyToOne, Rel, Entity, OneToMany, Cascade, Collection } from '@mikro-orm/mysql';
 import { BaseEntity } from '../shared/baseEntity.js';
 import { State } from '../state/state.entity.js';
-//import { User } from '../user/user.entity.js';
+import { User } from '../user/user.entity.js';
 //import { Payment } from '../payment/payment.entity.js';
 //import { Chat } from '../chat/chat.entity.js';
 //import { Visit } from '../visit/visit.entity.js';
@@ -18,9 +18,9 @@ export class Designation extends BaseEntity {
   @ManyToOne(() => State, {nullable: false})
   state!: Rel<State>;
 
-  /*
   @ManyToOne(() => User, {nullable: false})
   agent!: Rel<User>;
+  /*
   
   @OneToMany(() => Payment, (payment) => payment.designation, {cascade: [Cascade.ALL]})
   payments = new Collection<Payment>(this);
