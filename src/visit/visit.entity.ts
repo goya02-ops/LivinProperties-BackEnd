@@ -1,7 +1,7 @@
-import { Entity, Property, ManyToOne, Rel } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne, Rel } from '@mikro-orm/mysql';
 import { BaseEntity } from '../shared/baseEntity.js';
-// import { User } from '../user/user,entity.js';
-// import { Designation } from '../designation/designation,entity.js';
+import { User } from '../user/user.entity.js';
+import { Designation } from '../designation/designation.entity.js';
 
 @Entity()
 
@@ -16,14 +16,9 @@ export class Visit extends BaseEntity {
     @Property({nullable: false})
     state!: string;
 
-/*
-
-    @ManyToOne(() => User, {nullable: false})
-    user!: Rel<User>;
-
     @ManyToOne(() => Designation, {nullable: false})
     designation!: Rel<Designation>;
-
-*/
-
+    
+    @ManyToOne(() => User, {nullable: false})
+    client!: Rel<User>;
 }

@@ -17,7 +17,7 @@ function sanitizeVisitInput(req: Request, res: Response, next: NextFunction){
 async function findAll(req: Request, res: Response) {
   try {
     const em = orm.em;
-    const visits = await em.find(Visit, {});
+    const visits = await em.find(Visit, {}, { populate: ['designation', 'client'] });
     res.status(200).json({ message: "Find all visits", data: visits });
   } catch (error: any) {
     res.status(500).json({ data: error.message });
@@ -28,7 +28,7 @@ async function findOne(req: Request, res: Response) {
   try {
     const em = orm.em;
     const id = Number.parseInt(req.params.id);
-    const visit = await em.findOneOrFail(Visit, { id });
+    const visit = await em.findOneOrFail(Visit, { id }, { populate: ['designation', 'client'] });
     res.status(200).json({ message: "Visit found", data: visit });
   } catch (error: any) {
     res.status(500).json({ data: error.message });
