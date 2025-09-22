@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { Payment } from "./payment.entity.js";
-import { City } from "../city/city.entity.js";
 import { orm } from "../shared/orm.js";
 
 // Middleware para sanitizar la entrada.
@@ -8,7 +7,8 @@ function sanitizePaymentInput(req: Request, res: Response, next: NextFunction) {
     req.body.sanitizeInput = {
         amount: req.body.amount,
         date_since: req.body.date_since,
-        id_state: req.body.id_state
+        id_state: req.body.id_state,
+        payment: req.body.payment,
     };
 
     Object.keys(req.body.sanitizeInput).forEach(key => {
@@ -35,7 +35,7 @@ async function findOne(req: Request, res: Response) {
         const em = orm.em;
         const id = Number(req.params.id);
 
-        const payment = await em.findOne(Payment, {id});
+        const payment = await em.findOne(Payment, {id}, { populate: ['designation'] });
         if (!payment) {
             return res.status(404).json({ message: "Payment not found" });
         }
@@ -50,17 +50,15 @@ async function add(req: Request, res: Response) {
     const em = orm.em;
     try {
     // Crear el pago usando BaseEntity
-    const payment = em.create(Payment, 
-      req.body.sanitizeInput
-    );
+    const payment = em.create(Payment, req.body.sanitizeInput);
 
     await em.persistAndFlush(payment);
 
     res.status(201).json({ message: "Payment created successfully", data: payment });
-  } catch (error: any) {
+    } catch (error: any) {
     console.error("Error creating payment:", error);
     res.status(500).json({ message: "Internal server error", data: error.message });
-  }
+    }
 }
 
 
@@ -102,22 +100,22 @@ async function update(req: Request, res: Response) {
 
 // Eliminar un pago
 async function remove(req: Request, res: Response) {
-  try {
-    const em = orm.em.fork();
-    const id = Number(req.params.id);
+    try {
+        const em = orm.em.fork();
+        const id = Number(req.params.id);
 
-    const payment = await em.findOne(Payment, {id});
+        const payment = await em.findOne(Payment, {id});
 
-    if (!payment) {
-      return res.status(404).json({ message: "Payment not found" });
-    }
+        if (!payment) {
+            return res.status(404).json({ message: "Payment not found" });
+        }
 
     await em.removeAndFlush(payment);
 
     res.status(200).json({ message: "Payment deleted successfully" });
-  } catch (error: any) {
+    } catch (error: any) {
     res.status(500).json({ data: error.message });
-  }
+    }
 }
 
 
