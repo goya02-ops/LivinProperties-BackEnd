@@ -1,7 +1,6 @@
-import { Entity, PrimaryKey, Property, ManyToOne, Rel } from '@mikro-orm/core';
-/*import { City } from '../city/city.entity.js';*/
+import { Entity, Property, ManyToOne, Rel } from '@mikro-orm/mysql';
 import { BaseEntity } from '../shared/baseEntity.js';
-/*import { Designation } from '../designation/designation.entity.js'*/ 
+//import { Designation } from '../designation/designation.entity.js'
 
 @Entity()
 export class Payment extends BaseEntity {
