@@ -1,7 +1,7 @@
 import { Entity, OneToMany, Property, Cascade, Collection } from '@mikro-orm/mysql';
 import { BaseEntity } from '../shared/baseEntity.js';
 import { Designation } from '../designation/designation.entity.js';
-// import { Visit } from '../visit/visit.entity.js';
+import { Visit } from '../visit/visit.entity.js';
 // import { Chat } from '../chat/chat.entity.js';
 
 
@@ -37,14 +37,13 @@ export class User extends BaseEntity {
     cascade: [Cascade.ALL] 
   })
   Designations = new Collection<Designation>(this);
-/*
 
-  
-  @OneToMany(() => Visit, (Visit) => Visit.user, {
+  @OneToMany(() => Visit, (visit) => visit.client, {
     cascade: [Cascade.ALL] 
   })
   Visits = new Collection<Visit>(this);
 
+/*
   
   @OneToMany(() => Chat, (Chat) => Chat.user, {
     cascade: [Cascade.ALL] 

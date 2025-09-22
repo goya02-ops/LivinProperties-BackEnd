@@ -8,6 +8,7 @@ import { router as neighborhoodRouter } from './neighborhood/neighborhood.routes
 import { stateRouter } from './state/state.routes.js';
 import { priceRouter } from './price/price.routes.js';
 import { documentationRouter } from './documentation/documentation.routes.js';
+import { visitRouter } from './visit/visit.routes.js';
 import { userRouter } from './user/user.routes.js';
 
 const app = express();
@@ -26,7 +27,7 @@ app.use('/api/users', userRouter);
 app.use('/api/states', stateRouter);
 app.use('/api/prices', priceRouter);
 app.use('/api/documents', documentationRouter);
-
+app.use('/api/visits', visitRouter);
 app.use((_, res) => {
   res.status(404).json({ message: "Not Found" });
   return;

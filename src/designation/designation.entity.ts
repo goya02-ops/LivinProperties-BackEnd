@@ -4,7 +4,7 @@ import { State } from '../state/state.entity.js';
 import { User } from '../user/user.entity.js';
 //import { Payment } from '../payment/payment.entity.js';
 //import { Chat } from '../chat/chat.entity.js';
-//import { Visit } from '../visit/visit.entity.js';
+import { Visit } from '../visit/visit.entity.js';
 
 @Entity()
 export class Designation extends BaseEntity {
@@ -20,6 +20,9 @@ export class Designation extends BaseEntity {
 
   @ManyToOne(() => User, {nullable: false})
   agent!: Rel<User>;
+
+  @OneToMany(() => Visit, (visit) => visit.designation, {cascade: [Cascade.ALL]})
+  visits = new Collection<Visit>(this);
   /*
   
   @OneToMany(() => Payment, (payment) => payment.designation, {cascade: [Cascade.ALL]})
@@ -28,7 +31,5 @@ export class Designation extends BaseEntity {
   @OneToMany(() => Chat, (chat) => chat.designation, {cascade: [Cascade.ALL]})
   chats = new Collection<Chat>(this);
 
-  @OneToMany(() => Visits, (visits) => visits.designation, {cascade: [Cascade.ALL]})
-  visits = new Collection<Visit>(this);
   */
 }
