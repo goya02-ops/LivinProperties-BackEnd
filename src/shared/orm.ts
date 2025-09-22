@@ -2,18 +2,18 @@ import { MikroORM } from "@mikro-orm/mysql";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 
 export const orm = await MikroORM.init({
-  entities: ["./dist/**/*.entity.js"], 
-  entitiesTs: ["./src/**/*.entity.ts"], 
-  dbName: "inmobiliarialvp",
-  clientUrl: "mysql://lvp:AgusLuchoRamaSantiTomi12345@localhost:3306/inmobiliarialvp",
-  highlighter: new SqlHighlighter(),
-  debug: true,
-  schemaGenerator: {
-    disableForeignKeys: true,
-    createForeignKeyConstraints: true,
-    ignoreSchema: [],
-  },
-});
+  entities: ["./dist/**/*.entity.js"],
+  entitiesTs: ["./src/**/*.entity.ts"],
+  dbName: "inmobiliarialvp",
+  clientUrl: "mysql://lvp:LivinProp%231@localhost:3306/inmobiliarialvp", //# codificado como %23
+  highlighter: new SqlHighlighter(),
+  debug: true,
+  schemaGenerator: { // never in production
+    disableForeignKeys: true,
+    createForeignKeyConstraints: true,
+    ignoreSchema:[],
+  },
+})
 
 export const syncSchema = async () => {
   const generator = orm.getSchemaGenerator();

@@ -1,0 +1,40 @@
+### obtener visitas
+GET http://localhost:3000/api/visits
+
+### crear visita
+# @name createVisit
+POST http://localhost:3000/api/visits
+Content-Type: application/json
+
+{
+  "date": "2025-09-17",
+  "hour": "15:30",
+  "state": "pending"
+}
+
+### ID
+@id = {{createVisit.response.body.data.id}}
+
+### obtener visita por id
+GET http://localhost:3000/api/visits/{{id}}
+
+### actualizar visita (PUT)
+PUT http://localhost:3000/api/visits/{{id}}
+Content-Type: application/json
+
+{
+  "date": "2025-09-17",
+  "hour": "16:00",
+  "state": "completed"
+}
+
+### actualizar solo estado de la visita (PATCH)
+PATCH http://localhost:3000/api/visits/{{id}}
+Content-Type: application/json
+
+{
+  "state": "cancelled"
+}
+
+### eliminar visita
+DELETE http://localhost:3000/api/visits/{{id}}
